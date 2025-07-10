@@ -1,22 +1,19 @@
-import { ApolloServer, gql } from "apollo-server"
-import { books } from "./data/books"
+import { loadFilesSync } from "@graphql-tools/load-files"
+import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge"
+import { ApolloServer } from "apollo-server"
+import path from "path"
 
-const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
+//schema/配下のマージ
+const typeDefsArray = loadFilesSync(path.join(__dirname, "schema"), {
+  extensions: ["graphql", "gql"],
+})
+const typeDefs = mergeTypeDefs(typeDefsArray)
 
-  type Query {
-    books: [Book]
-  }
-`
-
-const resolvers = {
-  Query: {
-    books: () => books,
-  },
-}
+//resolvers/配下のマージ
+const resolversArray = loadFilesSync(path.join(__dirname, "resolvers"), {
+  extensions: ["ts", "js"],
+})
+const resolvers = mergeResolvers(resolversArray)
 
 const server = new ApolloServer({
   typeDefs,
@@ -24,5 +21,5 @@ const server = new ApolloServer({
 })
 
 server.listen().then(({ url }) => {
-  console.log(`server listen : ${url}`)
+  console.log(`server ready at ${url}`)
 })
