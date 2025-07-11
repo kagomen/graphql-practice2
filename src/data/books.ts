@@ -1,4 +1,4 @@
-export const books = [
+export let books = [
   {
     title: "吾輩は猫である",
     author: "夏目漱石",

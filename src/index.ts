@@ -3,16 +3,12 @@ import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge"
 import { ApolloServer } from "apollo-server"
 import path from "path"
 
-//schema/配下のマージ
-const typeDefsArray = loadFilesSync(path.join(__dirname, "schema"), {
-  extensions: ["graphql", "gql"],
-})
+//schemaのマージ
+const typeDefsArray = loadFilesSync(path.join(__dirname, "graphql/schema"))
 const typeDefs = mergeTypeDefs(typeDefsArray)
 
-//resolvers/配下のマージ
-const resolversArray = loadFilesSync(path.join(__dirname, "resolvers"), {
-  extensions: ["ts", "js"],
-})
+//resolversのマージ
+const resolversArray = loadFilesSync(path.join(__dirname, "graphql/resolvers"))
 const resolvers = mergeResolvers(resolversArray)
 
 const server = new ApolloServer({
