@@ -19,7 +19,7 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   addTask: Task;
-  deleteTask?: Maybe<Scalars['Boolean']['output']>;
+  deleteTask: Task;
   updateTask: Task;
 };
 
@@ -143,7 +143,7 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addTask?: Resolver<ResolversTypes['Task'], ParentType, ContextType, RequireFields<MutationAddTaskArgs, 'title'>>;
-  deleteTask?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteTaskArgs, 'id'>>;
+  deleteTask?: Resolver<ResolversTypes['Task'], ParentType, ContextType, RequireFields<MutationDeleteTaskArgs, 'id'>>;
   updateTask?: Resolver<ResolversTypes['Task'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'id'>>;
 };
 

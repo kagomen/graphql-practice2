@@ -1,4 +1,4 @@
-import { tasks } from "../../data/tasks"
+import { prisma } from "../../lib/prisma"
 import { Resolvers } from "../generated/graphql"
 
 /*
@@ -17,37 +17,39 @@ import { Resolvers } from "../generated/graphql"
  */
 export const resolvers: Resolvers = {
   Query: {
-    getTasks: () => tasks,
+    getTasks: async () => prisma.task.findMany(),
   },
 
   Mutation: {
-    addTask: (_, { title }) => {
-      const newTask = {
-        id: String(tasks.length + 1),
-        title: title,
-        completed: false,
-      }
-      tasks.push(newTask)
-      return newTask
+    addTask: async (_, { title }) => {
+      return prisma.task.create({
+        data: {
+          title,
+          completed: false,
+        },
+      })
     },
 
     updateTask: (_, { id, title, completed }) => {
-      const targetTask = tasks.find((task) => task.id === id)
-      if (!targetTask) throw new Error("Task is not found")
-
-      targetTask.title = title ?? targetTask.title
-      targetTask.completed = completed ?? targetTask.completed
-
-      return targetTask
+      return prisma.task.update({
+        where: {
+          id,
+        },
+        data: {
+          // prisma.task.update()では、
+          // dataオブジェクトにundefinedが渡されたフィールドはSQL文に含まれない
+          id: title ?? undefined,
+          completed: completed ?? undefined,
+        },
+      })
     },
 
-    deleteTask: (_, { id }) => {
-      const targetTaskIndex = tasks.findIndex((task) => task.id === id)
-      //findIndex()は対象が見つからなければ-1を返す
-      if (targetTaskIndex === -1) throw new Error("Task is not found")
-
-      tasks.splice(targetTaskIndex, 1)
-      return true
+    deleteTask: async (_, { id }) => {
+      return prisma.task.delete({
+        where: {
+          id,
+        },
+      })
     },
   },
 }
