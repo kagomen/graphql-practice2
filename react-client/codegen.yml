@@ -1,0 +1,9 @@
+# サーバーからスキーマを取得
+schema: "http://localhost:4000/"
+generates:
+  src/graphql/generated/:
+    preset: "client"
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"

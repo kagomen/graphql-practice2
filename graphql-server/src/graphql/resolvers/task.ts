@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma"
-import { Resolvers } from "../generated/graphql"
+import { Resolvers } from "../generated"
 
 /*
  * resolver(parent, args, context, info)

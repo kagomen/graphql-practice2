@@ -1,14 +1,22 @@
-interface Task {
-  id: string
-  title: string
-  completed: boolean
-}
+import { gql, useQuery } from "@apollo/client"
+import type { Task } from "./graphql/generated/graphql"
 
 function App() {
-  const tasks: Task[] = [
-    { id: "1", title: "掃除", completed: false },
-    { id: "2", title: "洗濯", completed: false },
-  ]
+  const GET_TASKS = gql`
+    query FetchAllTasks {
+      getTasks {
+        id
+        title
+        completed
+      }
+    }
+  `
+
+  const { loading, error, data } = useQuery(GET_TASKS)
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message}</p>
+
   return (
     <div>
       <form action="">
@@ -16,7 +24,7 @@ function App() {
         <button>+</button>
       </form>
       <ul>
-        {tasks.map((task) => (
+        {data?.getTasks.map((task: Task) => (
           <li key={task.id}>
             <input type="checkbox" checked={task.completed} />
             {task.title}
