@@ -11,7 +11,7 @@ export const TaskItem = ({ task }: { task: Task }) => {
     })
   }
   return (
-    <li key={task.id}>
+    <li>
       <input
         type="checkbox"
         checked={task.completed}

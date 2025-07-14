@@ -5,7 +5,7 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
   return (
     <ul>
       {tasks?.map((task) => (
-        <TaskItem task={task} />
+        <TaskItem key={task.id} task={task} />
       ))}
     </ul>
   )
