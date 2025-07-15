@@ -1,10 +1,32 @@
-import { useMutation } from "@apollo/client"
 import { useState } from "react"
-import { ADD_TASK, GET_TASKS } from "../graphql/queries"
+import {
+  GetTasksDocument,
+  useAddTaskMutation,
+  type GetTasksQuery,
+} from "../graphql/generated"
 
 export const TaskForm = () => {
-  const [addTask] = useMutation(ADD_TASK)
   const [title, setTitle] = useState("")
+
+  const [addTask, { loading }] = useAddTaskMutation({
+    //サーバーへ問い合わせず、ミューテーションの成功結果を使い、ブラウザ内のキャッシュデータを直接書き換え
+    update(cache, { data: mutationResult }) {
+      if (!mutationResult?.addTask) return
+
+      const newTask = mutationResult.addTask
+
+      const existingData = cache.readQuery<GetTasksQuery>({
+        query: GetTasksDocument,
+      })
+
+      if (existingData?.getTasks) {
+        cache.writeQuery({
+          query: GetTasksDocument,
+          data: { getTasks: [...existingData.getTasks, newTask] },
+        })
+      }
+    },
+  })
 
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -13,7 +35,6 @@ export const TaskForm = () => {
 
     await addTask({
       variables: { title },
-      refetchQueries: [{ query: GET_TASKS }],
     })
 
     setTitle("")
@@ -26,7 +47,9 @@ export const TaskForm = () => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <button type="submit">+</button>
+      <button type="submit" disabled={loading}>
+        +
+      </button>
     </form>
   )
 }

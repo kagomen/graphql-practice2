@@ -17,5 +17,24 @@
   - フロントで使うデータ取得用コードを生成することも可能
 
 - prisma
+
   - `npx prisma init --datasource-provider <provider name>`
   - `npx prisma migrate dev --name <migration file name>`
+
+- 各ツールについて
+  - graphql
+    - サバクラ間でデータをやり取りするためのクエリ言語。API のルールを定義
+    - BE: データ・クエリ・ミューテーションのスキーマを定義
+    - FE: クエリ・ミューテーションを定義
+  - apollo server
+    - BE 用ライブラリ
+    - リゾルバ（レスポンス処理）の定義
+    - graphql リクエストを受け付けるためのサーバープロセスを構築・起動
+  - apollo client
+    - FE で動作する状態管理ライブラリ
+    - useQuery, useMutation で API リクエスト送信
+    - キャッシュ管理
+  - codegen
+    - cli ツール
+    - graphql スキーマに対応する型定義を生成
+    - apollo client の hook をラップした型安全な custom hook を生成

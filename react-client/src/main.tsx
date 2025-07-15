@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client"
 import App from "./App.tsx"
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000",
+  uri: "http://localhost:4000", //バックエンドのURLを指定
   cache: new InMemoryCache(),
 })
 

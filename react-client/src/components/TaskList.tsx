@@ -1,4 +1,4 @@
-import type { Task } from "../graphql/generated/graphql"
+import type { Task } from "../graphql/generated"
 import { TaskItem } from "./TaskItem"
 
 export const TaskList = ({ tasks }: { tasks: Task[] }) => {

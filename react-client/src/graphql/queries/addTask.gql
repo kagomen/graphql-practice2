@@ -1,0 +1,7 @@
+mutation addTask($title: String!) {
+  addTask(title: $title) {
+    id
+    title
+    completed
+  }
+}
